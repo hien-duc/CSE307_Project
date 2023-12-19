@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Movie Information Form with Dropzone</title>
+    <link href="css/styles.css" rel="stylesheet" />
+    <script
+      src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <!-- Include DataTables CSS and JS -->
+    <link
+      href="https://cdn.datatables.net/v/dt/jszip-3.10.1/dt-1.13.8/af-2.6.0/b-2.4.2/b-colvis-2.4.2/b-html5-2.4.2/b-print-2.4.2/cr-1.7.0/date-1.5.1/fc-4.3.0/fh-3.4.0/kt-2.11.0/r-2.5.0/rg-1.4.1/rr-1.4.1/sc-2.3.0/sb-1.6.0/sp-2.2.0/sl-1.7.0/sr-1.3.0/datatables.min.css"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/v/dt/jszip-3.10.1/dt-1.13.8/af-2.6.0/b-2.4.2/b-colvis-2.4.2/b-html5-2.4.2/b-print-2.4.2/cr-1.7.0/date-1.5.1/fc-4.3.0/fh-3.4.0/kt-2.11.0/r-2.5.0/rg-1.4.1/rr-1.4.1/sc-2.3.0/sb-1.6.0/sp-2.2.0/sl-1.7.0/sr-1.3.0/datatables.min.js"></script>
+    <style>
+      /* Style for the "Browse Image" button */
+      .browse-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #99d1db;
+        color: #232634;
+        text-decoration: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      body {
+        font-family: "Arial", sans-serif;
+        margin: 20px;
+      }
+
+      form {
+        margin-top: 20px;
+      }
+
+      table {
+        width: 80%;
+        margin: 0 auto;
+        border-collapse: collapse;
+      }
+
+      td {
+        padding: 10px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        color: #555;
+        text-align: left; /* Align labels to the left */
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px; /* Rounded corners */
+      }
+
+      input[type="submit"] {
+        background-color: #99d1db;
+        color: #232634;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px; /* Rounded corners */
+        padding: 10px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add transitions for a smooth effect */
+        box-shadow: 0 4px 8px #99d1db; /* Add box shadow */
+      }
+
+      input[type="submit"]:hover {
+        background-color: #85c1dc;
+        transform: scale(1.009); /* Scale up on hover */
+        box-shadow: 0 8px 16px #85c1dc; /* Increase box shadow on hover */
+      }
+      h1.mt-4 {
+        text-align: left;
+        margin-top: 0; /* Remove default margin for h1 */
+      }
+      /* Style for Dropzone container */
+      #dropzone-container {
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body class="sb-nav-fixed">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+      <!-- Navbar Brand-->
+      <a class="navbar-brand ps-3" href="index.html">Start Bootstrap</a>
+      <!-- Sidebar Toggle-->
+      <button
+        class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
+        id="sidebarToggle"
+        href="#!"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
+      <!-- Navbar Search-->
+      <form
+        class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"
+      >
+        <!-- <div class="input-group">
+          <input
+            class="form-control"
+            type="text"
+            placeholder="Search for..."
+            aria-label="Search for..."
+            aria-describedby="btnNavbarSearch"
+          />
+          <button class="btn btn-primary" id="btnNavbarSearch" type="button">
+            <i class="fas fa-search"></i>
+          </button>
+        </div> -->
+      </form>
+      <!-- Navbar-->
+      <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            id="navbarDropdown"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            ><i class="fas fa-user fa-fw"></i
+          ></a>
+          <ul
+            class="dropdown-menu dropdown-menu-end"
+            aria-labelledby="navbarDropdown"
+          >
+            <li><a class="dropdown-item" href="#!">Settings</a></li>
+            <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item" href="#!">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+    <div id="layoutSidenav">
+      <div id="layoutSidenav_nav">
+        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+          <div class="sb-sidenav-menu">
+            <div class="nav">
+              <div class="sb-sidenav-menu-heading">Core</div>
+              <a class="nav-link" href="index.html">
+                <div class="sb-nav-link-icon">
+                  <i class="fas fa-tachometer-alt"></i>
+                </div>
+                Dashboard
+              </a>
+
+              <div class="sb-sidenav-menu-heading">Addons</div>
+
+              <a class="nav-link" href="tables.html">
+                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                Tables
+              </a>
+              <a class="nav-link" href="add-product.html">
+                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                Add product
+              </a>
+            </div>
+          </div>
+          <div class="sb-sidenav-footer">
+            <div class="small">Logged in as:</div>
+            Start Bootstrap
+          </div>
+        </nav>
+      </div>
+      <div id="layoutSidenav_content">
+        <main>
+          <div class="container-fluid px-4">
+            <h1 class="mt-4">Add product</h1>
+            <ol class="breadcrumb mb-4">
+              <li class="breadcrumb-item">
+                <a href="index.html">Dashboard</a>
+              </li>
+              <li class="breadcrumb-item active">
+                Using the form below to add a product
+              </li>
+            </ol>
+
+            <!-- Your form container -->
+            <form action="#" method="post">
+              <table>
+                <tr>
+                  <td>
+                    <label for="title">Title:</label>
+                    <input
+                      type="text"
+                      id="title"
+                      name="title"
+                      placeholder="Enter the title"
+                      required
+                    />
+                  </td>
+                  <td>
+                    <label for="year">Year:</label>
+                    <input
+                      type="text"
+                      id="year"
+                      name="year"
+                      placeholder="Enter the year"
+                      required
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <label for="rated">Rated:</label>
+                    <input
+                      type="text"
+                      id="rated"
+                      name="rated"
+                      placeholder="Enter the rating"
+                      required
+                    />
+                  </td>
+                  <td>
+                    <label for="released">Released:</label>
+                    <input
+                      type="text"
+                      id="released"
+                      name="released"
+                      placeholder="Enter the release date"
+                      required
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <label for="runtime">Runtime:</label>
+                    <input
+                      type="text"
+                      id="runtime"
+                      name="runtime"
+                      placeholder="Enter the runtime"
+                      required
+                    />
+                  </td>
+                  <td>
+                    <label for="genre">Genre:</label>
+                    <input
+                      type="text"
+                      id="genre"
+                      name="genre"
+                      placeholder="Enter the genre"
+                      required
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <label for="director">Director:</label>
+                    <input
+                      type="text"
+                      id="director"
+                      name="director"
+                      placeholder="Enter the director"
+                      required
+                    />
+                  </td>
+                  <td>
+                    <label for="writer">Writer:</label>
+                    <input
+                      type="text"
+                      id="writer"
+                      name="writer"
+                      placeholder="Enter the writer"
+                      required
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <label for="actors">Actors:</label>
+                    <input
+                      type="text"
+                      id="actors"
+                      name="actors"
+                      placeholder="Enter the actors"
+                      required
+                    />
+                  </td>
+                  <td>
+                    <label for="plot">Plot:</label>
+                    <textarea
+                      id="plot"
+                      name="plot"
+                      placeholder="Enter the plot"
+                      rows="4"
+                      required
+                    ></textarea>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <label for="language">Language:</label>
+                    <input
+                      type="text"
+                      id="language"
+                      name="language"
+                      placeholder="Enter the language"
+                      required
+                    />
+                  </td>
+                  <td>
+                    <label for="country">Country:</label>
+                    <input
+                      type="text"
+                      id="country"
+                      name="country"
+                      placeholder="Enter the country"
+                      required
+                    />
+                  </td>
+                </tr>
+
+                <!-- Dropzone container -->
+                <tr>
+                  <td colspan="2" id="dropzone-container">
+                    <!-- Your Dropzone container -->
+                    <div class="dropzone" id="myDropzone"></div>
+                  </td>
+                </tr>
+
+                <!-- Submit button -->
+                <tr>
+                  <td colspan="2"><input type="submit" value="Submit" /></td>
+                </tr>
+              </table>
+            </form>
+
+            <!-- Dropzone.js library -->
+            <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+
+            <script>
+              // Customize your Dropzone configuration here
+              Dropzone.options.myDropzone = {
+                url: "#", // Placeholder URL since we're not sending files to a server
+                maxFilesize: 5, // Set the maximum file size in megabytes
+                acceptedFiles: ".jpg, .jpeg, .png, .gif", // Specify accepted file types
+                addRemoveLinks: true, // Add remove links to uploaded files
+
+                dictDefaultMessage:
+                  "Drag and drop your image here or <br><p class='browse-button'>Browse Image</p>", // Set the initial custom label with HTML
+
+                success: function (file) {
+                  // Handle successful uploads
+                  console.log("File uploaded:", file);
+                },
+                error: function (file, errorMessage) {
+                  // Handle upload errors
+                  console.error(errorMessage);
+                },
+                removedfile: function (file) {
+                  // Handle file removal
+                  console.log("File removed:", file);
+                },
+              };
+            </script>
+          </div>
+        </main>
+        <footer class="py-4 bg-light mt-auto">
+          <div class="container-fluid px-4">
+            <div
+              class="d-flex align-items-center justify-content-between small"
+            >
+              <div class="text-muted">Copyright &copy; Your Website 2023</div>
+              <div>
+                <a href="#">Privacy Policy</a>
+                &middot;
+                <a href="#">Terms &amp; Conditions</a>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css"
+      type="text/css"
+    />
+    <script src="js/scripts.js"></script>
+  </body>
+</html>
