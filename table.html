@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Table</title>
+
+    <script
+      src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <!-- Include DataTables CSS and JS -->
+    <link
+      href="https://cdn.datatables.net/v/dt/jszip-3.10.1/dt-1.13.8/af-2.6.0/b-2.4.2/b-colvis-2.4.2/b-html5-2.4.2/b-print-2.4.2/cr-1.7.0/date-1.5.1/fc-4.3.0/fh-3.4.0/kt-2.11.0/r-2.5.0/rg-1.4.1/rr-1.4.1/sc-2.3.0/sb-1.6.0/sp-2.2.0/sl-1.7.0/sr-1.3.0/datatables.min.css"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/v/dt/jszip-3.10.1/dt-1.13.8/af-2.6.0/b-2.4.2/b-colvis-2.4.2/b-html5-2.4.2/b-print-2.4.2/cr-1.7.0/date-1.5.1/fc-4.3.0/fh-3.4.0/kt-2.11.0/r-2.5.0/rg-1.4.1/rr-1.4.1/sc-2.3.0/sb-1.6.0/sp-2.2.0/sl-1.7.0/sr-1.3.0/datatables.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Animate css -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+  </head>
+  <body class="sb-nav-fixed">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+      <!-- Navbar Brand-->
+      <a class="navbar-brand ps-3" href="index.html">Movies</a>
+      <!-- Sidebar Toggle-->
+      <button
+        class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
+        id="sidebarToggle"
+        href="#!"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
+    </nav>
+    <div id="layoutSidenav">
+      <div id="layoutSidenav_nav">
+        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+          <div class="sb-sidenav-menu">
+            <div class="nav">
+              <div class="sb-sidenav-menu-heading">Core</div>
+              <a class="nav-link" href="index.html">
+                <div class="sb-nav-link-icon">
+                  <i class="fas fa-tachometer-alt"></i>
+                </div>
+                Dashboard
+              </a>
+
+              <div class="sb-sidenav-menu-heading">Addons</div>
+
+              <a class="nav-link" href="table.html">
+                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                Tables
+              </a>
+              <a class="nav-link" href="add-product.html">
+                <div class="sb-nav-link-icon">
+                  <i class="fa fa-plus-square" aria-hidden="true"></i>
+                </div>
+                Add product
+              </a>
+              <a class="nav-link" href="product-img.html">
+                <div class="sb-nav-link-icon">
+                  <i class="fa fa-window-maximize" aria-hidden="true"></i>
+                </div>
+                Product details
+              </a>
+            </div>
+          </div>
+          <div class="sb-sidenav-footer">
+            <div class="small">Duc:Movies Storage</div>
+            <img src="rabbit.gif" alt="Icon" style="height: 2.5rem" />
+          </div>
+        </nav>
+      </div>
+      <div id="layoutSidenav_content">
+        <main>
+          <div class="container-fluid px-4">
+            <h1 class="mt-4">Tables</h1>
+            <ol class="breadcrumb mb-4">
+              <li class="breadcrumb-item">
+                <a href="index.html">Dashboard</a>
+              </li>
+              <li class="breadcrumb-item active">Tables</li>
+            </ol>
+
+            <div class="card mb-4">
+              <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+                List of Movie
+              </div>
+              <div class="card-body">
+                <table
+                  id="myTable"
+                  class="display responsive"
+                  style="width: 100%"
+                >
+                  <thead>
+                    <tr>
+                      <th>Title</th>
+                      <th>Year</th>
+                      <th>Rated</th>
+                      <th>Genre</th>
+                      <th>Director</th>
+                      <th>Rating</th>
+                      <th>Delete</th>
+                      <th>Edit</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+            </div>
+          </div>
+        </main>
+        <footer class="py-4 bg-light mt-auto">
+          <div class="container-fluid px-4">
+            <div
+              class="d-flex align-items-center justify-content-between small"
+            >
+              <div class="text-muted">
+                Copyright &copy; duc.t.cit21@eiu.edu.vn
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+    <script>
+      $(document).ready(function () {
+        $.ajax({
+          url: "movies.json",
+          dataType: "json",
+          success: function (data) {
+            $("#myTable").DataTable({
+              data: data,
+              responsive: true,
+              paging: true,
+              searching: true,
+              ordering: true,
+              lengthMenu: [
+                [10, 25, 50, -1],
+                [10, 25, 50, "All"],
+              ],
+              scrollX: true,
+              colReorder: true,
+              dom: '<"dt-buttons-container"B<"ml-auto">lfrtip>',
+              buttons: [
+                {
+                  extend: "copy",
+                  text: '<i class="far fa-copy"></i> Copy',
+                  className: "btn btn-light",
+                },
+                {
+                  extend: "excel",
+                  text: '<i class="far fa-file-excel"></i> Excel',
+                  className: "btn btn-success",
+                },
+                {
+                  extend: "pdf",
+                  text: '<i class="far fa-file-pdf"></i> PDF',
+                  className: "btn btn-danger",
+                },
+              ],
+              columns: [
+                { data: "Title" },
+                { data: "Year" },
+                { data: "Rated" },
+                { data: "Genre" },
+                { data: "Director" },
+                { data: "imdbRating" },
+                {
+                  // New column for delete button
+                  data: null,
+                  render: function (data, type, row) {
+                    return '<button class="btn btn-danger btn-sm delete-btn"><i class="fa fa-trash" aria-hidden="true"></i></button>';
+                  },
+                },
+                {
+                  // New column for edit button
+                  data: null,
+                  render: function (data, type, row) {
+                    return '<button class="btn btn-warning btn-sm edit-btn" data-bs-toggle="modal" data-bs-target="#editModal"><i class="fa fa-pencil" aria-hidden="true"></i></button>';
+                  },
+                },
+              ],
+            });
+          },
+          error: function (error) {
+            console.error("Error loading data:", error);
+          },
+        });
+        $("#myTable").on("click", ".delete-btn", function () {
+          // Get the selected row
+          var row = $(this).closest("tr");
+
+          // Confirm the deletion
+          if (confirm("Are you sure you want to delete this row?")) {
+            // Delete the row from the DataTable
+            var table = $("#myTable").DataTable();
+            table.row(row).remove().draw();
+          }
+        });
+      });
+    </script>
+    <style>
+      .dt-buttons-container .btn {
+        background-color: #91d7e3 !important;
+        color: #fff !important;
+      }
+      #myTable {
+        border: 2px solid #91d7e3 !important;
+      }
+      /* Main Content Animation */
+      main {
+        animation: fadeIn 1s ease-in-out;
+      }
+
+      /* Footer Animation */
+      footer {
+        animation: fadeInUp 1s ease-in-out;
+      }
+
+      /* Sidebar Toggle Animation */
+      button#sidebarToggle {
+        animation: fadeInRight 1s ease-in-out;
+      }
+
+      /* Sidebar Animation */
+      nav.sb-sidenav {
+        animation: fadeInLeft 1s ease-in-out;
+      }
+    </style>
+    <link href="css/styles.css" rel="stylesheet" />
+    <script src="js/scripts.js"></script>
+  </body>
+</html>

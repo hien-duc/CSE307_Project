@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Product-img</title>
+
+    <script
+      src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <!--  -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+
+      #result {
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      .movie {
+        flex: 30%;
+        margin: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        transition: box-shadow 0.3s ease;
+      }
+
+      .movie:hover {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      }
+
+      img {
+        max-width: 100%;
+        height: 200px;
+        object-fit: cover;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+      }
+
+      img:hover {
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        transform: scale(1.1);
+      }
+
+      h2 {
+        margin-bottom: 10px;
+      }
+
+      p {
+        margin: 5px 0;
+      }
+
+      .pagination {
+        display: flex;
+        list-style: none;
+        padding: 0;
+      }
+
+      .pagination li {
+        margin: 0 5px;
+        cursor: pointer;
+      }
+
+      .pagination li.active {
+        font-weight: bold;
+      }
+      .pagination li:hover {
+        background-color: #aaa;
+      }
+
+      .pagination li.active {
+        font-weight: bold;
+        background-color: #555;
+        color: #fff;
+      }
+      /* Modal styles */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+
+      .modal-content {
+        background-color: #fefefe;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 60%;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      }
+
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .close:hover {
+        color: #555;
+      }
+      /* Main Content Animation */
+      main {
+        animation: fadeIn 1s ease-in-out;
+      }
+
+      /* Footer Animation */
+      footer {
+        animation: fadeInUp 1s ease-in-out;
+      }
+
+      /* Sidebar Toggle Animation */
+      button#sidebarToggle {
+        animation: fadeInRight 1s ease-in-out;
+      }
+
+      /* Sidebar Animation */
+      nav.sb-sidenav {
+        animation: fadeInLeft 1s ease-in-out;
+      }
+    </style>
+    <script>
+      let movieData;
+      const moviesPerPage = 3;
+      let currentPage = 1;
+
+      function showMovies(movies) {
+        const resultContainer = document.getElementById("result");
+        resultContainer.innerHTML = "";
+
+        const startIndex = (currentPage - 1) * moviesPerPage;
+        const endIndex = startIndex + moviesPerPage;
+        const displayedMovies = movies.slice(startIndex, endIndex);
+
+        for (let i = 0; i < displayedMovies.length; i++) {
+          const movie = displayedMovies[i];
+          const movieElement = document.createElement("div");
+          movieElement.className = "movie";
+          movieElement.innerHTML = `
+      <h2>${movie.Title}</h2>
+      <img src="${movie.Poster}" alt="${movie.Title} Poster" />
+      <p><strong>Year:</strong> ${movie.Year}</p>
+    `;
+          movieElement.addEventListener("click", () => showMovieDetails(movie));
+          resultContainer.appendChild(movieElement);
+        }
+      }
+
+      function updatePagination(movies) {
+        const totalPages = Math.ceil(movies.length / moviesPerPage);
+        const paginationElement = document.getElementById("pagination");
+
+        let paginationHtml = "";
+        for (let i = 1; i <= totalPages; i++) {
+          paginationHtml += `<li onclick="changePage(${i})" class="${
+            i === currentPage ? "active" : ""
+          }">${i}</li>`;
+        }
+
+        paginationElement.innerHTML = paginationHtml;
+      }
+
+      function changePage(page) {
+        currentPage = page;
+        showMovies(movieData);
+        updatePagination(movieData);
+      }
+
+      function fetchDataAndDisplay() {
+        fetch("movies.json")
+          .then((response) => response.json())
+          .then((data) => {
+            movieData = data;
+            showMovies(data, currentPage);
+            updatePagination(data);
+          })
+          .catch((error) => {
+            console.error("Error fetching JSON:", error);
+          });
+      }
+
+      document.addEventListener("DOMContentLoaded", fetchDataAndDisplay);
+
+      function showMovieDetails(movie) {
+        const modalContent = document.getElementById("modalContent");
+        modalContent.innerHTML = `
+        <h2>${movie.Title}</h2>
+        <img src="${movie.Poster}" alt="${movie.Title} Poster" />
+        <p><strong>Year:</strong> ${movie.Year}</p>
+        <p><strong>Rated:</strong> ${movie.Rated}</p>
+        <p><strong>Runtime:</strong> ${movie.Runtime}</p>
+        <p><strong>Genre:</strong> ${movie.Genre}</p>
+        <p><strong>Director:</strong> ${movie.Director}</p>
+        p><strong>Actors:</strong> ${movie.Actors}</p>
+        <p><strong>Plot:</strong> ${movie.Plot}</p>
+        <p><strong>Language:</strong> ${movie.Language}</p>
+        <p><strong>Awards:</strong> ${movie.Awards}</p>
+        <p><strong>IMDb Rating:</strong> ${movie.imdbRating}</p>
+        `;
+        document.getElementById("myModal").style.display = "block";
+      }
+
+      function closeModal() {
+        document.getElementById("myModal").style.display = "none";
+      }
+      document.addEventListener("DOMContentLoaded", function () {
+        fetchDataAndDisplay();
+        AOS.init(); // Initialize AOS
+      });
+    </script>
+  </head>
+  <body class="sb-nav-fixed">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+      <!-- Navbar Brand-->
+      <a class="navbar-brand ps-3" href="index.html">Movies</a>
+      <!-- Sidebar Toggle-->
+      <button
+        class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
+        id="sidebarToggle"
+        href="#!"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
+    </nav>
+    <div id="layoutSidenav">
+      <div id="layoutSidenav_nav">
+        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+          <div class="sb-sidenav-menu">
+            <div class="nav">
+              <div class="sb-sidenav-menu-heading">Core</div>
+              <a class="nav-link" href="index.html">
+                <div class="sb-nav-link-icon">
+                  <i class="fas fa-tachometer-alt"></i>
+                </div>
+                Dashboard
+              </a>
+
+              <div class="sb-sidenav-menu-heading">Addons</div>
+              <a class="nav-link" href="table.html">
+                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                Tables
+              </a>
+              <a class="nav-link" href="add-product.html">
+                <div class="sb-nav-link-icon">
+                  <i class="fa fa-plus-square" aria-hidden="true"></i>
+                </div>
+                Add product
+              </a>
+              <a class="nav-link" href="product-img.html">
+                <div class="sb-nav-link-icon">
+                  <i class="fa fa-window-maximize" aria-hidden="true"></i>
+                </div>
+                Product details
+              </a>
+            </div>
+          </div>
+          <div class="sb-sidenav-footer">
+            <div class="small">Duc:Movies Storage</div>
+            <img src="rabbit.gif" alt="Icon" style="height: 2.5rem" />
+          </div>
+        </nav>
+      </div>
+      <div id="layoutSidenav_content">
+        <main>
+          <div class="container-fluid px-4">
+            <h1 class="mt-4">Product detail</h1>
+            <ol class="breadcrumb mb-4">
+              <li class="breadcrumb-item active">
+                Click on the movie for more details
+              </li>
+            </ol>
+
+            <div class="card mb-4">
+              <div id="result"></div>
+              <ul id="pagination" class="pagination"></ul>
+              <!-- Modal -->
+              <div id="myModal" class="modal">
+                <div class="modal-content">
+                  <span class="close" onclick="closeModal()">&times;</span>
+                  <div id="modalContent"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+        <footer
+          class="py-4 bg-light mt-auto"
+          data-aos="fade-up"
+          data-aos-delay="1000"
+        >
+          <div class="container-fluid px-4">
+            <div
+              class="d-flex align-items-center justify-content-between small"
+            >
+              <div class="text-muted">
+                Copyright &copy; duc.t.cit21@eiu.edu.vn
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+    <link href="css/styles.css" rel="stylesheet" />
+    <script src="js/scripts.js"></script>
+  </body>
+</html>
